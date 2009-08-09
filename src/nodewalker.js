@@ -1,7 +1,7 @@
 /* -------------------------------------------------------
 //////////////////////////////////////////////////////////
 nodewalker.js - walking the DOM fast
-version 1.0
+version 1.0.1
 
 The MIT License
 
@@ -28,24 +28,35 @@ THE SOFTWARE.
 ------------------------------------------------------- */
 (function(ns){
     
+    /* ---------------------------------------------------------------------------
+    default configuration
+    --------------------------------------------------------------------------- */
     var _defaults = {
         ignoreClasses : 'nodewalker-stop',
         useCaches : true,
         handlers : []
     };
     
+    /* ---------------------------------------------------------------------------
+    different modes that matches can use
+    --------------------------------------------------------------------------- */
     var _modes = {
         'AND' : 2,
         'OR' : 1
     };
     
-    // very fast has class (without proper node or name checks though)
+    /* ---------------------------------------------------------------------------
+    hasClass - very fast has class
+    TODO: evaluate to make this function safer, without losing performance
+    --------------------------------------------------------------------------- */
     var hasClass = function(str, className) {
         var r = new RegExp("(^|\\s)" + className + "(\\s|$)");
         return r.test(str);
     };
     
-    // get count of classes contained (based on hasClass)
+    /* ---------------------------------------------------------------------------
+    hasClasses - get count of classes contained (based on hasClass)
+    --------------------------------------------------------------------------- */
     var hasClasses = function(str, classNames) {
         var names = classNames.split(' ');
         var len = names.length;
@@ -56,7 +67,9 @@ THE SOFTWARE.
         return count;
     };
     
-    // check if the node should be ignored
+    /* ---------------------------------------------------------------------------
+    shouldIgnore - check if the node should be ignored
+    --------------------------------------------------------------------------- */
     var shouldIgnore = function(node, config) {
         var className = node.className;
         var ignoreByClass = hasClasses(className, config.ignoreClasses);
@@ -64,7 +77,9 @@ THE SOFTWARE.
         return ignoreByClass || ignoreByRouter;
     };
     
-    // run handlers on a node
+    /* ---------------------------------------------------------------------------
+    runHandlers - run handlers on a node -
+    --------------------------------------------------------------------------- */
     var runHandlers = function(node, config) {
         var useCaches = config.useCaches;
         
@@ -94,7 +109,7 @@ THE SOFTWARE.
                 if (searches[nodeName] !== undefined) {
                     var hasNodeMatch = searches[nodeName];
                 } else {
-                    var hasNodeMatch = (nodeName && hasClasses(caches.nodeNames, nodeName)) ? true : false;
+                    var hasNodeMatch = (nodeName && hasClasses(caches.nodeNames, nodeName) > 0) ? true : false;
                     searches[nodeName] = hasNodeMatch;
                 }
             } else {
@@ -133,7 +148,9 @@ THE SOFTWARE.
         return true;
     };
     
-    
+    /* ---------------------------------------------------------------------------
+    walk - walk the DOM tree
+    --------------------------------------------------------------------------- */
     var walk = function(node, config) {
         if (shouldIgnore(node, config)) return;
         
@@ -162,6 +179,9 @@ THE SOFTWARE.
         }
     };
     
+    /* ---------------------------------------------------------------------------
+    buildConfig - build up configuration, merges defaults with given config
+    --------------------------------------------------------------------------- */
     var buildConfig = function(config) {
         var build = {};
         for (var name in _defaults) {
@@ -196,6 +216,9 @@ THE SOFTWARE.
         return build;
     };
     
+    /* ---------------------------------------------------------------------------
+    buildCaches - builds up caches object baseed on given handler filters
+    --------------------------------------------------------------------------- */
     var buildCaches = function(config) {
         // build up caches
         var nodeNames = '';
@@ -219,6 +242,9 @@ THE SOFTWARE.
         };
     };
     
+    /* ---------------------------------------------------------------------------
+    nodewalker instance - binds to ns object
+    --------------------------------------------------------------------------- */
     ns.nodewalker = {
         defaults : _defaults,
         modes : _modes,

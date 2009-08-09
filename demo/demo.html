@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Imperial Walker</title>
+        
+        <link rel="stylesheet" href="demo.css" type="text/css" charset="utf-8"/>
+        <script type="text/javascript" src="../src/nodewalker.js"></script>
+        <script type="text/javascript" src="demo.js"></script>
+    </head>
+    <body onload="demo.setDefaults()">
+        
+        <a class="start-button" href="javascript:demo.startWalkerForBody()">Click to start the imperial walker on the body (with font-size handler)</a>
+        <a class="start-button" href="javascript:demo.startWalkerForTable()">Click to walk inside the large dom structure</a>
+        
+        <div class="make-green">This div should become green unless ignored</div>
+        
+        <form>
+            <div>
+                <p>
+                    This is a form, all elements should be prefilled by a handler and get a border color
+                </p>
+                <input type="text"/>
+                <input type="text"/>
+                <input type="text"/>
+                <div class="make-green">This div should become green unless ignored</div>
+                
+            </div>
+        </form>
+        
+        <div class="widget-with-large-dom">
+            <table id="that-table">
+                <thead>
+                    <tr>
+                        <th colspan="4">A large dom structure that should be ignored</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="make-green">This div should become green unless ignored</div>
+                        </td>
+                        <td>.</td><td>.</td><td>.</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="make-green">This div should become green unless ignored</div>
+                        </td>
+                        <td>.</td><td>.</td><td>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="make-green">This div should become green unless ignored</div>
+        
+    </body>
+</html>
